@@ -1,0 +1,1 @@
+find . -path "*migrations*" -name "*.py" -not -path "*__init__*" -not -path "./venv?*" -delete
