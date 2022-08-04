@@ -24,7 +24,8 @@
 ***base directory feature***
 
     1.  In apis folder you will found custom renderer class. 
-        Also find a CustomSwaggerAutoSchema class so that you sectionize your api documentation like this       ```swagger_tags = ["Users"]``` in your views.
+        Also find a CustomSwaggerAutoSchema class so that you sectionize your api documentation
+        like this  ```swagger_tags = ["Users"]``` in your views.
 
     2. In cache folder you will find a redis_cache file where you will find few function 
        to set, get, delete from redis
