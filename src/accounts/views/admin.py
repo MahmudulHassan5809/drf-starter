@@ -17,7 +17,7 @@ class AdminUserListCreateApiView(ListCreateAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.filter()
     filterset_class = UserFilter
-    swagger_tags = ["Firm User"]
+    swagger_tags = ["Users"]
 
     @method_decorator(exception_handler)
     def create(self, request, *args, **kwargs):
