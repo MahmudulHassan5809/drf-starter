@@ -23,19 +23,28 @@
 
 ***base directory feature***
 
-    1.  In apis folder you will found custom renderer class. Also find a CustomSwaggerAutoSchema class so that you sectionize your api documentation like this ```swagger_tags = ["Users"]``` in your views.
+    1.  In apis folder you will found custom renderer class. 
+        Also find a CustomSwaggerAutoSchema class so that you sectionize your api documentation like this       ```swagger_tags = ["Users"]``` in your views.
 
-    2. In cache folder you will find a redis_cache file where you will find few function to set, get, delete from redis
+    2. In cache folder you will find a redis_cache file where you will find few function 
+       to set, get, delete from redis
    
-    3. In helpers folder you will find a decorators file consist of exception_handler decorator to handle any exception like this ```@method_decorator(exception_handler)```. Here you will also find a email to file which is used to send email using sendgrid. Also there is a file for custom pagination and a utils file for some utility function
+    3. In helpers folder you will find a decorators file consist of exception_handler decorator 
+       to handle any exception like this ```@method_decorator(exception_handler)```. 
+       Here you will also find a email to file which is used to send email using sendgrid. 
+       Also there is a file for custom pagination and a utils file for some utility function
 
-    4. In middleware folders you will find two file app_logger which is responsible to show log in terminal and another file auth.py which is responsible to check token is valid.
+    4. In middleware folders you will find two file app_logger which is 
+       responsible to show log in terminal and another 
+       file auth.py which is responsible to check token is valid.
    
-    5. In this folder you will also find some file like models.py consist base model for all others model, permissions.py consist of few permissions classes, serializers.py for base serializer class.Permission usages : 
+    5. In this folder you will also find some file like models.py consist base model 
+       for all others model,  permissions.py consist of few permissions classes, 
+       serializers.py for base serializer class.Permission usages : 
     
-    permission_classes = (HasRequiredPermissionForMethod,)
-    get_permission_required = ['app.permission_name']
-    post_permission_required = ['app.permission_name']
+       permission_classes = (HasRequiredPermissionForMethod,)
+       get_permission_required = ['app.permission_name']
+       post_permission_required = ['app.permission_name']
 
 ## How to run this project
 
