@@ -1,0 +1,68 @@
+version: "3"
+
+services:
+  db:
+    image: postgis/postgis:13-3.2-alpine
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=prime-rental
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=prime-rental
+      - POSTGRES_HOST=localhost
+    ports:
+      - 5433:5432
+    
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  worker:
+    build: .
+    depends_on:
+      - redis
+      - db
+    volumes:
+      - ./src:/app/src
+    env_file:
+      - .env
+    command: bash -c "cd src/ && celery -A myproject.settings.celery worker -l info"
+    
+
+  flower:
+    build: .
+    command: celery --broker=redis://redis:6379/0 flower --port=5555
+    ports:
+      - 5556:5555
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/
+    depends_on:
+      - worker
+    volumes:
+      - flower_data:/etc/db/
+    
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./src:/app/src
+    command: bash -c "cd src && python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - 8000:8000
+    env_file:
+      - .env
+
+
+volumes:
+  pgdata:
+  redis_data:
+  flower_data:
