@@ -46,8 +46,17 @@
        permission_classes = (HasRequiredPermissionForMethod,)
        get_permission_required = ['app.permission_name']
        post_permission_required = ['app.permission_name']
+    
+    6. In scripts folder you will find few helper scripts to run fresh migrations, create db, initial database with seeders.
+    
+    7. In seeders folder you write script to generate fake data. Also there is an example how you can dot it.
+    
+    8. In tests folder you can write unit test. You can flow the given example.
+    
+    9. In accounts app you will find pre made api for authentication like login, logout, profile update, reset password, refresh token and more
 
-## How to run this project
+
+## How to run this project using virtual ENV
 
     1. Create virtual env python3 -m venv ./venv
     2. Active venv source venv/bin/activate

@@ -8,7 +8,8 @@ from django.contrib import admin
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-
+from django.conf.urls.static import static
+from myproject.settings import STATIC_ROOT, STATIC_URL
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -36,6 +37,9 @@ urlpatterns = [
 ]
 
 urlpatterns += [path('api-auth/', include('rest_framework.urls')), ]
+
+urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
+# urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
 
 if settings.DEBUG:
     urlpatterns += [path('__debug__/', include('debug_toolbar.urls'))]
