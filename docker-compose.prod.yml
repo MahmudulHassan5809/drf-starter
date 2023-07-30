@@ -6,9 +6,9 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=prime_rental
-      - POSTGRES_PASSWORD=prime_rental
-      - POSTGRES_DB=prime_rental
+      - POSTGRES_USER=mahmudul
+      - POSTGRES_PASSWORD=152155809
+      - POSTGRES_DB=django_starter
       - POSTGRES_HOST=localhost
     ports:
       - 5433:5432
@@ -66,7 +66,7 @@ services:
       - redis
     volumes:
       - ./src:/app/src
-    command: bash -c "cd /app/src && python manage.py runserver 0.0.0.0:8000"
+    command: bash -c "cd /app/src && gunicorn myproject.wsgi:application --bind 0.0.0.0:8000"
     ports:
       - 8000:8000
     networks:
@@ -74,6 +74,23 @@ services:
     env_file:
       - .env
   
+
+  nginx:
+    container_name: nginx
+    image: nginx:mainline-alpine
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - static_volume:/app/src/static
+      - media_volume:/app/src/media
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+
 volumes:
   pgdata:
   redis_data:
