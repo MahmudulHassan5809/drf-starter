@@ -1,8 +1,7 @@
 from django.conf import settings
 from django.urls import path, include
 from django.urls.conf import re_path
-from base.views import DocumentUploadS3ApiView
-from base.views import health_check
+from base.views import DocumentUploadS3ApiView, RootAPIView, health_check
 from django.conf import settings
 from django.contrib import admin
 from rest_framework import permissions
@@ -36,7 +35,7 @@ urlpatterns = [
     path('s3-upload/', DocumentUploadS3ApiView.as_view()),
 ]
 
-urlpatterns += [path('api-auth/', include('rest_framework.urls')), ]
+urlpatterns += [path('api-auth/', include('rest_framework.urls')), path("root-api/", RootAPIView.as_view(), name="api-root")]
 
 urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
 # urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)

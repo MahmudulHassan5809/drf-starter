@@ -1,14 +1,18 @@
-import uuid
 import mimetypes
+import uuid
+
 import boto3
 from django.conf import settings
+from django.urls import get_resolver, reverse
 from django.utils.decorators import method_decorator
-from rest_framework.response import Response
-from rest_framework.request import Request
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import views
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from base.helpers.decorators import exception_handler
 
 # Create your views here.
@@ -52,3 +56,31 @@ def health_check(request: Request) -> Response:
         'method': request.method
     }
     return Response(data={'message': data}, status=status.HTTP_200_OK)
+
+
+
+def get_urls(request, url_patterns, namespace=""):
+    urls = []
+    for pattern in url_patterns:
+        url_name = f"{namespace}:{pattern.name}"
+        urls.append(request.build_absolute_uri(reverse(url_name)))
+    return urls
+
+
+class RootAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        app_names = ["accounts", "organizations"]
+        endpoints = {}
+        for app in app_names:
+            resolver = get_resolver(app)
+            endpoints[app] = {}
+            for url in ["admin", "user", "public"]:
+                resolver = get_resolver(f"{app}.urls.{url}")
+                url_patterns = resolver.url_patterns
+                print(url_patterns)
+                endpoints[app][url] = get_urls(
+                    request, url_patterns, f"{app}.apis:{url}"
+                )
+        return Response(endpoints)
