@@ -1,5 +1,5 @@
-from rest_framework.serializers import SerializerMethodField, ModelSerializer
 from base.models import BaseModel
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
 
 class ReadWriteSerializerMethodField(SerializerMethodField):
@@ -10,7 +10,7 @@ class ReadWriteSerializerMethodField(SerializerMethodField):
         super(SerializerMethodField, self).__init__(**kwargs)
 
     def to_internal_value(self, data):
-        return {f'{self.field_name}_id': data}
+        return {f"{self.field_name}_id": data}
 
 
 class BaseModelSerializer(ModelSerializer):
@@ -42,8 +42,7 @@ class DynamicFieldsModelSerializer(ModelSerializer):
 
         if rw_method_fields:
             for name in rw_method_fields:
-                self.fields[name] = ReadWriteSerializerMethodField(
-                    source=f"get_{name}")
+                self.fields[name] = ReadWriteSerializerMethodField(source=f"get_{name}")
 
         if r_method_fields:
             for name in r_method_fields:

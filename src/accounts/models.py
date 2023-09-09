@@ -1,6 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
-from base.type_choices import UserTypeOption
+from django.db import models
 
 
 # Create your models here.
@@ -10,8 +9,8 @@ class User(AbstractUser):
     is_active = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name = 'User'
-        verbose_name_plural = '1. User'
+        verbose_name = "User"
+        verbose_name_plural = "1. User"
 
     def __str__(self):
         return self.email

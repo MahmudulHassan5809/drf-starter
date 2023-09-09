@@ -37,8 +37,8 @@ RUN pip install -r /app/requirements.txt
 
 COPY src $APP_HOME
 
-RUN chmod +x /app/src/entrypoint.sh
-RUN sed -i 's/\r$//g' /app/src/entrypoint.sh
+RUN chmod +x /app/src/scripts/entrypoint.sh
+RUN sed -i 's/\r$//g' /app/src/scripts/entrypoint.sh
 
 
 
@@ -51,4 +51,4 @@ EXPOSE 8000
 
 
 # run entrypoint.sh
-ENTRYPOINT ["/bin/bash","/app/src/entrypoint.sh"]
+ENTRYPOINT ["/bin/bash","/app/src/scripts/entrypoint.sh"]

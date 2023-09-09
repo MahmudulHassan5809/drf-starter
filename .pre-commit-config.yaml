@@ -1,28 +1,56 @@
 default_language_version:
-    python: python3.8
+    python: python3.10
 repos:
     - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v4.3.0
+      rev: v4.4.0
       hooks:
+          - id: check-ast
           - id: check-yaml
           - id: trailing-whitespace
           - id: check-executables-have-shebangs
           - id: debug-statements
           - id: check-merge-conflict
           - id: end-of-file-fixer
+          - id: name-tests-test
+            args: [ "--django" ]
+
+    - repo: https://github.com/pycqa/bandit
+      rev: 1.7.5
+      hooks:
+        - id: bandit
+          args: ['-iii', '-ll']
+
     - repo: https://github.com/psf/black
-      rev: 22.6.0
+      rev: 23.9.0
       hooks:
           - id: black
+
+    - repo: https://github.com/asottile/seed-isort-config
+      rev: v2.2.0
+      hooks:
+        - id: seed-isort-config
+
     - repo: https://github.com/pycqa/isort
-      rev: 5.10.1
+      rev: 5.12.0
       hooks:
           - id: isort
             name: isort (python)
-            exclude: /__init__\.py$
-            args: ["--profile", "black"]
-    - repo: https://gitlab.com/pycqa/flake8
-      rev: 3.9.2
+
+    - repo: https://github.com/asottile/pyupgrade
+      rev: v3.10.1
+      hooks:
+        - id: pyupgrade
+          args: [ "--py36-plus", "--py37-plus", "--py38-plus", "--py39-plus" ]
+
+    - repo: https://github.com/pycqa/flake8
+      rev: 6.1.0
       hooks:
           - id: flake8
+            additional_dependencies: [
+              "flake8-bugbear",
+              "flake8-comprehensions",
+              "flake8-mutable",
+              "flake8-print",
+              "flake8-simplify",
+            ]
             args: ["-j8", "--extend-ignore=E203,E501,P103"]

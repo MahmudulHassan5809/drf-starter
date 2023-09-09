@@ -1,4 +1,3 @@
-import copy
 from rest_framework.permissions import BasePermission
 
 
@@ -20,12 +19,14 @@ class HasRequiredPermissionForMethod(BasePermission):
     delete_permission_required = None
 
     def has_permission(self, request, view):
-        permission_required_name = f'{request.method.lower()}_permission_required'
-        if not request.user.is_authenticated and not (request.user.is_superuser or request.user.is_staff):
+        permission_required_name = f"{request.method.lower()}_permission_required"
+        if not request.user.is_authenticated and not (
+            request.user.is_superuser or request.user.is_staff
+        ):
             return False
         if not hasattr(view, permission_required_name):
             view_name = view.__class__.__name__
-            self.message = f'IMPLEMENTATION ERROR: Please add the {permission_required_name} variable in the API view class: {view_name}.'
+            self.message = f"IMPLEMENTATION ERROR: Please add the {permission_required_name} variable in the API view class: {view_name}."
             return False
 
         permission_required = getattr(view, permission_required_name)
@@ -34,7 +35,7 @@ class HasRequiredPermissionForMethod(BasePermission):
         else:
             perms = permission_required
         if not any(request.user.has_perm(perm) for perm in perms):
-            self.message = f'Access denied. You need the/any_of {permission_required} permission to access this service with {request.method}.'
+            self.message = f"Access denied. You need the/any_of {permission_required} permission to access this service with {request.method}."
             return False
         # if not request.user.has_perm(permission_required):
         #     self.message = f'Access denied. You need the {permission_required} permission to access this service with {request.method}.'

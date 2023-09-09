@@ -1,14 +1,15 @@
 import re
-from typing import Callable, List
-from django.db.models import Lookup
+from typing import Callable
+
 from django.apps import apps
+from django.db.models import Lookup
 
 
 def create_slug(title: str, random_str: str = None) -> str:
-    title = re.sub('[^A-Za-z ]+', ' ', title).lower().strip()
-    title = re.sub(' +', '-', title)
+    title = re.sub("[^A-Za-z ]+", " ", title).lower().strip()
+    title = re.sub(" +", "-", title)
     if random_str:
-        return title + '-' + random_str
+        return title + "-" + random_str
     return title
 
 
@@ -29,7 +30,7 @@ def format_filter_string(old_dict, keys):
 def get_model_from_app(app_name: str, model_name: str):
     try:
         return apps.get_model(app_label=app_name, model_name=model_name)
-    except Exception as ex:
+    except Exception:
         return None
 
 
@@ -42,18 +43,20 @@ def snake_to_title(string: str):
 
 
 class NotEqual(Lookup):
-    lookup_name = 'ne'
+    lookup_name = "ne"
 
     def as_sql(self, compiler, connection):
         lhs, lhs_params = self.process_lhs(compiler, connection)
         rhs, rhs_params = self.process_rhs(compiler, connection)
         params = lhs_params + rhs_params
-        return '%s <> %s' % (lhs, rhs), params
+        return f"{lhs} <> {rhs}", params
 
 
-def remove_duplicate_from_list(iterable: List, key:  Callable = None) -> List:
+def remove_duplicate_from_list(iterable: list, key: Callable = None) -> list:
     if key is None:
-        def key(x): return x
+
+        def key(x):
+            return x
 
     seen = set()
     for elem in iterable:
